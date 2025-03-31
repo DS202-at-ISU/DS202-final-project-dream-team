@@ -31,17 +31,17 @@ to your needs. But think about the changes that you make!
 
 # Title of your project
 
-Authors: First Name Last Name, First Name Last Name, …
+Authors: Kylie Tauke, Jordyn Reimer, …
 
 ## Abstract (TL;DR)
 
 An abstract is a quick summary of your work. Ideally it should motivate
 someone to read the rest of the paper. Include one sentence each on
 
--   what is the project about?
--   what is the motivation for doing it?
--   what data is your work based on? and where does it come from? = what
-    are your main findings? (one sentence each)
+- what is the project about?
+- what is the motivation for doing it?
+- what data is your work based on? and where does it come from? = what
+  are your main findings? (one sentence each)
 
 # Intro/Background/Motivation
 
@@ -95,10 +95,14 @@ sentence describes main finding, third sentence describes
 outliers/follow-up.</small>
 </p>
 
-![This is the figure caption. Make sure to use the description we
-practised in the homework: first sentence describes structure of the
-plot, second sentence describes main finding, third sentence describes
-outliers/follow-up.](README_files/figure-gfm/scatterplot-1.png)
+<figure>
+<img src="README_files/figure-gfm/scatterplot-1.png"
+alt="This is the figure caption. Make sure to use the description we practised in the homework: first sentence describes structure of the plot, second sentence describes main finding, third sentence describes outliers/follow-up." />
+<figcaption aria-hidden="true">This is the figure caption. Make sure to
+use the description we practised in the homework: first sentence
+describes structure of the plot, second sentence describes main finding,
+third sentence describes outliers/follow-up.</figcaption>
+</figure>
 
 <p>
 <small><strong><a name='fig:2nd scatterplot'>2nd
@@ -108,10 +112,14 @@ structure of the plot, second sentence describes main finding, third
 sentence describes outliers/follow-up.</small>
 </p>
 
-![This is the figure caption. Make sure to use the description we
-practised in the homework: first sentence describes structure of the
-plot, second sentence describes main finding, third sentence describes
-outliers/follow-up.](README_files/figure-gfm/2nd%20scatterplot-1.png)
+<figure>
+<img src="README_files/figure-gfm/2nd%20scatterplot-1.png"
+alt="This is the figure caption. Make sure to use the description we practised in the homework: first sentence describes structure of the plot, second sentence describes main finding, third sentence describes outliers/follow-up." />
+<figcaption aria-hidden="true">This is the figure caption. Make sure to
+use the description we practised in the homework: first sentence
+describes structure of the plot, second sentence describes main finding,
+third sentence describes outliers/follow-up.</figcaption>
+</figure>
 
 Additionally, you can also refer to different sections in your writeup
 by using anchors (links) to section headers. Here, we are referring to

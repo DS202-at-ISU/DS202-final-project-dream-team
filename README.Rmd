@@ -30,6 +30,7 @@ chunkref <- local({
 
 library(ggplot2)
 library(dplyr)
+library(tidyverse)
 ```
 
 
@@ -60,7 +61,7 @@ The structure sketched out below is an idea of what your repository might look l
 
 # Title of your project {.unnumbered}
 
-Authors: First Name Last Name, First Name Last Name, ...
+Authors: Kylie Tauke, Jordyn Reimer, ...
 
 ## Abstract (TL;DR) {.unnumbered}
 
@@ -80,6 +81,13 @@ Finally we conclude with a quick summary of our findings and potential follow-up
 Somewhere at the beginning of your project, include a code chunk that includes all of the R packages you are using throughout. In this document, the setup code chunk is called `setup` (see line 8) Also make sure to set defaults for the code chunks - like should they be visible? (probably not: echo=FALSE). Do you want to automatically include warnings? (probably yes, for creating the Rmd, to make sure that all warnings are accounted for)
 
 # Quick Data Summary
+
+```{r}
+data <- read.csv("https://data.iowa.gov/api/views/xwex-75fk/rows.csv?accessType=DOWNLOAD")
+
+
+
+```
 
 What are the variables that you will be using in the main part of the report? What are their ranges? You could include a table with variable names, a short explanation, and (very broad) summary statistics.
 
