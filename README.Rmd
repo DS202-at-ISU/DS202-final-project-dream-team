@@ -59,7 +59,7 @@ The structure sketched out below is an idea of what your repository might look l
 
 ## Part II: Project report {.unnumbered}
 
-# Title of your project {.unnumbered}
+# Consumer Spending in Iowa {.unnumbered}
 
 Authors: Kylie Tauke, Jordyn Reimer, and Akshat Valse
 
@@ -69,9 +69,9 @@ The data explored in this project details estimates on consumer spending in the 
 
 ADD FINDINGS LATER
 
-# Intro/Background/Motivation
+# Motivation
 
-What is the topic of your project, why is it relevant?
+We wanted to examine consumer spending in Iowa. Not only were we curious about the distribution of spending among different categories of goods, but this is also valuable information for any business providing a good or service.
 
 At the end of the Intro, write a sentence describing what each of the (result) sections is about, e.g. in section [Results 1] we show the relationship between XXX and YYY, section [Results 2] also considers the effect of variable ZZZ. ... Finally we conclude with a quick summary of our findings and potential follow-up work in section [Conclusions].
 
@@ -127,6 +127,24 @@ clean_data
 -   The data was cleaned by standardizing column names, extracting simplified categories from text fields, splitting composite IDs into separate columns, converting data types (dates, numbers), normalizing units to millions, and removing duplicates.
 
 What are the variables that you will be using in the main part of the report? What are their ranges? You could include a table with variable names, a short explanation, and (very broad) summary statistics.
+
+- The primary variables that will be used will be consumption_category, reported_year, and value_millions.
+
+```{r}
+clean_data %>% 
+  filter(category == "Total personal consumption expenditures") %>% 
+  ggplot(aes(reported_year, value)) + 
+  geom_point() + 
+  geom_line()
+
+clean_data %>% filter(!(category %in% c(
+  "Total personal consumption expenditures", 
+  "Per capita personal consumption expenditures (PCE) by state", 
+  "Final consumption expenditures of nonprofit institutions serving households (NPISHs)", 
+  "Services", 
+  "Household consumption expenditures (for services)"
+  ))) %>% ggplot(aes(category, value)) + geom_boxplot() + coord_flip()
+```
 
 # Results
 

@@ -29,7 +29,7 @@ to your needs. But think about the changes that you make!
 
 ## Part II: Project report
 
-# Title of your project
+# Consumer Spending in Iowa
 
 Authors: Kylie Tauke, Jordyn Reimer, and Akshat Valse
 
@@ -42,9 +42,12 @@ the U.S. Bureau of Economic Analysis.
 
 ADD FINDINGS LATER
 
-# Intro/Background/Motivation
+# Motivation
 
-What is the topic of your project, why is it relevant?
+We wanted to examine consumer spending in Iowa. Not only were we curious
+about the distribution of spending among different categories of goods,
+but this is also valuable information for any business providing a good
+or service.
 
 At the end of the Intro, write a sentence describing what each of the
 (result) sections is about, e.g. in section [Results 1](#results-1) we
@@ -63,6 +66,11 @@ work in section [Conclusions](#conclusions).
 What are the variables that you will be using in the main part of the
 report? What are their ranges? You could include a table with variable
 names, a short explanation, and (very broad) summary statistics.
+
+- The primary variables that will be used will be consumption_category,
+  reported_year, and value_millions.
+
+![](README_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-2-2.png)<!-- -->
 
 # Results
 
