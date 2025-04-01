@@ -55,6 +55,11 @@ work in section [Conclusions](#conclusions).
 
 # Quick Data Summary
 
+- The data was cleaned by standardizing column names, extracting
+  simplified categories from text fields, splitting composite IDs into
+  separate columns, converting data types (dates, numbers), normalizing
+  units to millions, and removing duplicates.
+
 What are the variables that you will be using in the main part of the
 report? What are their ranges? You could include a table with variable
 names, a short explanation, and (very broad) summary statistics.
@@ -72,7 +77,7 @@ You can include a hyperlink to the [scatterplot](#fig:scatterplot) by
 using the name of the code chunk (make sure, to give each code chunk a
 different name). In your markdown document you can create this link
 either by calling the function `chunkref` with the name of the code
-chunk in quotes, i.e. `r chunkref("scatterplot")` or by using the
+chunk in quotes, i.e. [scatterplot](#fig:scatterplot) or by using the
 markdown expression `[scatterplot](#fig:scatterplot)`. Similarly, we can
 refer to the [2nd scatterplot](#fig:2nd%20scatterplot). Note that the
 figure captions appear above the figures - this saves us from having to

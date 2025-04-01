@@ -30,6 +30,7 @@ chunkref <- local({
 
 library(ggplot2)
 library(dplyr)
+library(stringr)
 library(tidyverse)
 ```
 
@@ -76,17 +77,14 @@ At the end of the Intro, write a sentence describing what each of the (result) s
 
 # Quick Data Summary
 
-```{r}
+```{r, include = FALSE}
 data <- read.csv("https://data.iowa.gov/api/views/xwex-75fk/rows.csv?accessType=DOWNLOAD")
-
-library(dplyr)
-library(stringr)
 
 colnames(data) <- colnames(data) %>% 
   tolower() %>% 
   str_replace_all("[^a-z0-9]", "_")
 
-mutate(clean_data <- data %>%
+clean_data <- data %>% mutate(
     category = ifelse(
       grepl(":", variable),  
       sub(".*:\\s*", "", variable),  
