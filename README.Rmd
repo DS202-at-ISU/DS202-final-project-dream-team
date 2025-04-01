@@ -61,15 +61,13 @@ The structure sketched out below is an idea of what your repository might look l
 
 # Title of your project {.unnumbered}
 
-Authors: Kylie Tauke, Jordyn Reimer, ...
+Authors: Kylie Tauke, Jordyn Reimer, and Akshat Valse
 
 ## Abstract (TL;DR) {.unnumbered}
 
-An abstract is a quick summary of your work. Ideally it should motivate someone to read the rest of the paper. Include one sentence each on
+The data explored in this project details estimates on consumer spending in the state of Iowa. We wanted to identify what consumers spend the most on and how it has changed throughout the years. The data comes from the U.S. Bureau of Economic Analysis.
 
--   what is the project about?
--   what is the motivation for doing it?
--   what data is your work based on? and where does it come from? = what are your main findings? (one sentence each)
+ADD FINDINGS LATER
 
 # Intro/Background/Motivation
 
@@ -77,8 +75,6 @@ What is the topic of your project, why is it relevant?
 
 At the end of the Intro, write a sentence describing what each of the (result) sections is about, e.g. in section [Results 1] we show the relationship between XXX and YYY,  section [Results 2] also considers the effect of variable ZZZ. ...
 Finally we conclude with a quick summary of our findings and potential follow-up work in section [Conclusions].
-
-Somewhere at the beginning of your project, include a code chunk that includes all of the R packages you are using throughout. In this document, the setup code chunk is called `setup` (see line 8) Also make sure to set defaults for the code chunks - like should they be visible? (probably not: echo=FALSE). Do you want to automatically include warnings? (probably yes, for creating the Rmd, to make sure that all warnings are accounted for)
 
 # Quick Data Summary
 

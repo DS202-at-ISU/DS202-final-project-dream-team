@@ -31,17 +31,16 @@ to your needs. But think about the changes that you make!
 
 # Title of your project
 
-Authors: Kylie Tauke, Jordyn Reimer, …
+Authors: Kylie Tauke, Jordyn Reimer, and Akshat Valse
 
 ## Abstract (TL;DR)
 
-An abstract is a quick summary of your work. Ideally it should motivate
-someone to read the rest of the paper. Include one sentence each on
+The data explored in this project details estimates on consumer spending
+in the state of Iowa. We wanted to identify what consumers spend the
+most on and how it has changed throughout the years. The data comes from
+the U.S. Bureau of Economic Analysis.
 
-- what is the project about?
-- what is the motivation for doing it?
-- what data is your work based on? and where does it come from? = what
-  are your main findings? (one sentence each)
+ADD FINDINGS LATER
 
 # Intro/Background/Motivation
 
@@ -53,14 +52,6 @@ show the relationship between XXX and YYY, section [Results
 2](#results-2) also considers the effect of variable ZZZ. … Finally we
 conclude with a quick summary of our findings and potential follow-up
 work in section [Conclusions](#conclusions).
-
-Somewhere at the beginning of your project, include a code chunk that
-includes all of the R packages you are using throughout. In this
-document, the setup code chunk is called `setup` (see line 8) Also make
-sure to set defaults for the code chunks - like should they be visible?
-(probably not: echo=FALSE). Do you want to automatically include
-warnings? (probably yes, for creating the Rmd, to make sure that all
-warnings are accounted for)
 
 # Quick Data Summary
 
