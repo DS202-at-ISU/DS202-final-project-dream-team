@@ -182,6 +182,8 @@ Additionally, you can also refer to different sections in your writeup by using 
 
 Give a quick summary of your work. Here is the place to be a bit critical and discuss potential limitations. Add a sentence on what else you would have liked to include in your data exploration if you had more time or more members in your team.
 
+- Potential Ideas: Creating a model to help predict consumer spending. Probably a linear regression or random forest model.
+
 ## Data source {.unnumbered}
 
 Where does the data come from, who owns the data? Where are all the scripts that you need to clean the data?
