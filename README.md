@@ -68,9 +68,48 @@ report? What are their ranges? You could include a table with variable
 names, a short explanation, and (very broad) summary statistics.
 
 - The primary variables that will be used will be consumption_category,
-  reported_year, and value_millions.
+  reported_year, and value_millions. Some summaries and preliminary
+  plots are provided below.
 
-![](README_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-2-2.png)<!-- -->
+<!-- -->
+
+    ##     row_id           fips_code           data_year    series_code       
+    ##  Length:1296        Length:1296        Min.   :1997   Length:1296       
+    ##  Class :character   Class :character   1st Qu.:2003   Class :character  
+    ##  Mode  :character   Mode  :character   Median :2010   Mode  :character  
+    ##                                        Mean   :2010                     
+    ##                                        3rd Qu.:2017                     
+    ##                                        Max.   :2023                     
+    ##   frequency         variable_code        variable         consumption_category
+    ##  Length:1296        Length:1296        Length:1296        Length:1296         
+    ##  Class :character   Class :character   Class :character   Class :character    
+    ##  Mode  :character   Mode  :character   Mode  :character   Mode  :character    
+    ##                                                                               
+    ##                                                                               
+    ##                                                                               
+    ##      value        variable_unit           date            reported_year 
+    ##  Min.   :   297   Length:1296        Min.   :1997-12-31   Min.   :1997  
+    ##  1st Qu.:  1905   Class :character   1st Qu.:2003-12-31   1st Qu.:2003  
+    ##  Median :  3959   Mode  :character   Median :2010-12-31   Median :2010  
+    ##  Mean   : 10928                      Mean   :2010-12-31   Mean   :2010  
+    ##  3rd Qu.: 10263                      3rd Qu.:2017-12-31   3rd Qu.:2017  
+    ##  Max.   :153400                      Max.   :2023-12-31   Max.   :2023  
+    ##    prior_year     category         expenditure_type       unit          
+    ##  Min.   :1996   Length:1296        Length:1296        Length:1296       
+    ##  1st Qu.:2002   Class :character   Class :character   Class :character  
+    ##  Median :2009   Mode  :character   Mode  :character   Mode  :character  
+    ##  Mean   :2009                                                           
+    ##  3rd Qu.:2016                                                           
+    ##  Max.   :2022                                                           
+    ##  value_millions    
+    ##  Min.   :     0.0  
+    ##  1st Qu.:     0.0  
+    ##  Median :   428.8  
+    ##  Mean   :  8248.7  
+    ##  3rd Qu.:  6952.5  
+    ##  Max.   :153399.7
+
+![](README_files/figure-gfm/summaries-1.png)<!-- -->![](README_files/figure-gfm/summaries-2.png)<!-- -->
 
 # Results
 

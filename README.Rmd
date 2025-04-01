@@ -128,9 +128,11 @@ clean_data
 
 What are the variables that you will be using in the main part of the report? What are their ranges? You could include a table with variable names, a short explanation, and (very broad) summary statistics.
 
-- The primary variables that will be used will be consumption_category, reported_year, and value_millions.
+- The primary variables that will be used will be consumption_category, reported_year, and value_millions. Some summaries and preliminary plots are provided below.
 
-```{r}
+```{r summaries}
+summary(clean_data)
+
 clean_data %>% 
   filter(category == "Total personal consumption expenditures") %>% 
   ggplot(aes(reported_year, value)) + 
