@@ -73,7 +73,7 @@ ADD FINDINGS LATER
 
 We wanted to examine consumer spending in Iowa. Not only were we curious about the distribution of spending among different categories of goods, but this is also valuable information for any business providing a good or service.
 
-At the end of the Intro, write a sentence describing what each of the (result) sections is about, e.g. in section [Results 1] we show the relationship between XXX and YYY, section [Results 2] also considers the effect of variable ZZZ. ... Finally we conclude with a quick summary of our findings and potential follow-up work in section [Conclusions].
+At the end of the Intro, write a sentence describing what each of the (result) sections is about, e.g. in section [Results 1] we show the relationship between XXX and YYY, section [Results 2: Modeling Using Random Forests] also considers the effect of variable ZZZ. ... Finally we conclude with a quick summary of our findings and potential follow-up work in section [Conclusions].
 
 # Quick Data Summary
 
@@ -128,7 +128,7 @@ clean_data
 
 What are the variables that you will be using in the main part of the report? What are their ranges? You could include a table with variable names, a short explanation, and (very broad) summary statistics.
 
-- The primary variables that will be used will be consumption_category, reported_year, and value_millions. Some summaries and preliminary plots are provided below.
+-   The primary variables that will be used will be consumption_category, reported_year, and value_millions. Some summaries and preliminary plots are provided below.
 
 ```{r summaries}
 summary(clean_data)
@@ -158,31 +158,116 @@ In your write-up, make sure to refer to all of the figures you create. You can i
 
 ```{r scatterplot, echo=FALSE, fig.cap="This is the figure caption. Make sure to use the description we practised in the homework: first sentence describes structure of the plot, second sentence describes main finding, third sentence describes outliers/follow-up.", message = FALSE}
 
-mtcars %>% 
-  ggplot(aes(x = wt, y = mpg)) + 
-  geom_point()
+
+clean_data %>% 
+  filter(category == "Total personal consumption expenditures") %>% 
+  ggplot(aes(x = reported_year, y = value_millions)) +
+  geom_line() +
+  labs(x = "Year", y = "Expenditures (Millions USD)", title = "Total Consumer Spending Over Time")
+
 ```
 
 ```{r 2nd scatterplot, echo=FALSE, fig.cap="This is the figure caption. Make sure to use the description we practised in the homework: first sentence describes structure of the plot, second sentence describes main finding, third sentence describes outliers/follow-up.", message = FALSE}
 
-mtcars %>% 
-  ggplot(aes(x = wt, y = mpg)) + 
-  geom_point()
+
+clean_data %>%
+  filter(!is.na(category)) %>%
+  group_by(category) %>%
+  summarize(total_spending = sum(value_millions, na.rm = TRUE)) %>%
+  top_n(5, total_spending) %>%
+  ggplot(aes(reorder(category, total_spending), total_spending)) +
+  geom_col() +
+  coord_flip() +
+  labs(x = "Category", y = "Total Spending (Millions USD)", title = "Top 5 Spending Categories")
+
 ```
 
-Additionally, you can also refer to different sections in your writeup by using anchors (links) to section headers. Here, we are referring to subsection [Results 3]. The code for that is `[Results 3]`.
+Additionally, you can also refer to different sections in your writeup by using anchors (links) to section headers. Here, we are referring to subsection [Results 3: Volatility in Spending Categories Over Time]. The code for that is `[Results 3]`.
 
-## Results 2
+## Results 2: Modeling Using Random Forests
 
-## Results 3
+```{r}
+library(randomForest)
 
-...
+# Filter down to a manageable number of categories
+top_categories <- clean_data %>%
+  count(category, sort = TRUE) %>%
+  slice_head(n = 10) %>%
+  pull(category)
+
+rf_data <- clean_data %>%
+  filter(category %in% top_categories) %>%
+  select(category, reported_year, value_millions) %>%
+  na.omit()
+
+# Make sure 'category' is a factor for classification
+rf_data$category <- as.factor(rf_data$category)
+
+set.seed(123)  # for reproducibility
+train_idx <- sample(seq_len(nrow(rf_data)), size = 0.8 * nrow(rf_data))
+train_data <- rf_data[train_idx, ]
+test_data <- rf_data[-train_idx, ]
+
+rf_model <- randomForest(category ~ reported_year + value_millions, data = train_data, ntree = 500, importance = TRUE)
+rf_model
+
+```
+
+```{r}
+predictions <- predict(rf_model, newdata = test_data)
+confusion_matrix <- table(predictions, test_data$category)
+confusion_matrix
+
+accuracy <- sum(diag(confusion_matrix)) / sum(confusion_matrix)
+accuracy
+
+```
+
+```{r}
+varImpPlot(rf_model, main = "Variable Importance Plot")
+```
+
+## Results 3: Volatility in Spending Categories Over Time
+
+```{r}
+
+
+# Focus on top 8 categories for clarity
+top_categories_heatmap <- clean_data %>%
+  group_by(category) %>%
+  summarize(total_spending = sum(value_millions, na.rm = TRUE)) %>%
+  arrange(desc(total_spending)) %>%
+  slice_head(n = 8) %>%
+  pull(category)
+
+# Filter for plotting
+heatmap_data <- clean_data %>%
+  filter(category %in% top_categories_heatmap)
+
+# Plot
+ggplot(heatmap_data, aes(x = reported_year, y = fct_reorder(category, desc(category)), fill = value_millions)) +
+  geom_tile() +
+  scale_fill_viridis_c(option = "C", name = "Spending\n(Millions USD)") +
+  labs(
+    title = "Heatmap of Consumer Spending by Category and Year",
+    x = "Year",
+    y = "Category"
+  ) +
+  theme_minimal()
+
+
+
+```
 
 # Conclusions
 
 Give a quick summary of your work. Here is the place to be a bit critical and discuss potential limitations. Add a sentence on what else you would have liked to include in your data exploration if you had more time or more members in your team.
 
-- Potential Ideas: Creating a model to help predict consumer spending. Probably a linear regression or random forest model.
+-   In this project, we explored consumer spending patterns in Iowa using data from the U.S. Bureau of Economic Analysis. We analyzed overall spending trends over time, built a random forest model to predict spending categories based on expenditure and year, and visualized shifts in major spending categories through a heatmap. Our results show that total consumer spending in Iowa has steadily increased over the past two decades, with essential categories like healthcare and housing consistently dominating expenditure. Meanwhile, discretionary categories such as food services and recreation displayed greater volatility.
+
+    One limitation of our analysis is that we did not adjust spending figures for inflation or population growth, which could affect year-to-year comparisons. Additionally, our predictive model only used two variables incorporating more economic indicators (such as unemployment rates, income levels, or demographic shifts) might improve model accuracy and interpretation.
+
+    If we had more time or additional team members, we would have liked to build a forecasting model to predict future consumer spending by category. We also would have explored spatial differences across counties in Iowa to investigate whether spending patterns vary geographically within the state.
 
 ## Data source {.unnumbered}
 
