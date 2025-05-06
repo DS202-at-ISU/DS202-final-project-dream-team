@@ -69,6 +69,14 @@ The data explored in this project details estimates on consumer spending in the 
 
 ADD FINDINGS LATER
 
+THINGS TO NOTE
+- page number on slide
+- facet by categorical variables
+- not too much text on slides
+- he's kinda picky on what type of figure you use
+  - stacked vs dodge bar chart
+  - percent vs count bar chart
+
 # Motivation
 
 We wanted to examine consumer spending in Iowa. Not only were we curious about the distribution of spending among different categories of goods, but this is also valuable information for any business providing a good or service.
