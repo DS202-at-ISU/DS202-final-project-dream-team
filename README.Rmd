@@ -34,32 +34,9 @@ library(stringr)
 library(tidyverse)
 ```
 
-This repository serves as a starter repo for your final project, and this Rmd is supposed to serve as a starter file for your project report.
+## Part I: Project report {.unnumbered}
 
-## Part I: Repo Structure {.unnumbered}
-
-The structure sketched out below is an idea of what your repository might look like. You can use it as a starting base and change according to your needs. But think about the changes that you make!
-
-```         
--- code
-|   |   -- any R scripts you need but don't want to include directly in the write-up
--- data
-|   |   -- csv files (cleaned data)
--- data-raw
-|   |   -- raw data files 
-|   |   -- data description files, origin
-|   |   -- Codebook
--- final-project.Rmd
--- images  # only images that are not created by the Rmd
--- LICENSE
--- README.md
--- README.Rmd
--- README_files # folder with files created during the knitting process
-```
-
-## Part II: Project report {.unnumbered}
-
-# Consumer Spending in Iowa {.unnumbered}
+# Analysis of Consumer Spending in Iowa {.unnumbered}
 
 Authors: Kylie Tauke, Jordyn Reimer, and Akshat Valse
 
@@ -141,26 +118,29 @@ What are the variables that you will be using in the main part of the report? Wh
 ```{r summaries}
 summary(clean_data)
 
+goods <- c("Motor vehicles and parts", "Furnishings and durable household equipment", "Recreational goods and vehicles", "Other durable goods", "Food and beverages purchased for off-premises consumption", "Clothing and footwear", "Gasoline and other energy goods", "Other nondurable goods")
+
+services <- c("Housing and utilities", "Health care", "Transportation services", "Recreation services", "Food services and accommodations", "Financial services and insurance", "Other services")
+
 clean_data %>% 
   filter(category == "Total personal consumption expenditures") %>% 
   ggplot(aes(reported_year, value)) + 
   geom_point() + 
   geom_line()
 
-clean_data %>% filter(!(category %in% c(
-  "Total personal consumption expenditures", 
-  "Per capita personal consumption expenditures (PCE) by state", 
-  "Final consumption expenditures of nonprofit institutions serving households (NPISHs)", 
-  "Services", 
-  "Household consumption expenditures (for services)"
-  ))) %>% ggplot(aes(category, value)) + geom_boxplot() + coord_flip()
+clean_data %>% filter(category %in% goods | category %in% services
+  ) %>% ggplot(aes(category, value)) + geom_boxplot() + coord_flip()
 ```
 
 # Results
 
 Each line of exploration is supposed to be featured in one of the Results sections. Make sure to change to more interesting section headers!
 
-## Results 1
+## Kylie's Analysis
+
+## Jordyn's Analysis
+
+## AK's Analysis
 
 In your write-up, make sure to refer to all of the figures you create. You can include a hyperlink to the [scatterplot](#fig:scatterplot) by using the name of the code chunk (make sure, to give each code chunk a different name). In your markdown document you can create this link either by calling the function `chunkref` with the name of the code chunk in quotes, i.e. `r chunkref("scatterplot")` or by using the markdown expression `[scatterplot](#fig:scatterplot)`. Similarly, we can refer to the `r chunkref("2nd scatterplot")`. Note that the figure captions appear above the figures - this saves us from having to scroll up after following the link.
 
@@ -192,7 +172,7 @@ clean_data %>%
 
 Additionally, you can also refer to different sections in your writeup by using anchors (links) to section headers. Here, we are referring to subsection [Results 3: Volatility in Spending Categories Over Time]. The code for that is `[Results 3]`.
 
-## Results 2: Modeling Using Random Forests
+## AK's Model: Modeling Using Random Forests
 
 ```{r}
 library(randomForest)
@@ -235,7 +215,7 @@ accuracy
 varImpPlot(rf_model, main = "Variable Importance Plot")
 ```
 
-## Results 3: Volatility in Spending Categories Over Time
+## AK's Heatmap: Volatility in Spending Categories Over Time
 
 ```{r}
 
