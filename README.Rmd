@@ -46,13 +46,7 @@ The data explored in this project details estimates on consumer spending in the 
 
 ADD FINDINGS LATER
 
-THINGS TO NOTE
-- page number on slide
-- facet by categorical variables
-- not too much text on slides
-- he's kinda picky on what type of figure you use
-  - stacked vs dodge bar chart
-  - percent vs count bar chart
+THINGS TO NOTE - page number on slide - facet by categorical variables - not too much text on slides - he's kinda picky on what type of figure you use - stacked vs dodge bar chart - percent vs count bar chart
 
 # Motivation
 
@@ -202,7 +196,7 @@ Additionally, you can also refer to different sections in your writeup by using 
 
 ## AK's Model: Modeling Using Random Forests
 
-```{r}
+```{r, include=FALSE}
 library(randomForest)
 
 # Un-factor category
@@ -229,16 +223,40 @@ test_data <- rf_data[-train_idx, ]
 
 rf_model <- randomForest(category ~ reported_year + value_millions, data = train_data, ntree = 500, importance = TRUE)
 rf_model
-
 ```
 
 ```{r}
 predictions <- predict(rf_model, newdata = test_data)
 confusion_matrix <- table(predictions, test_data$category)
-confusion_matrix
 
 accuracy <- sum(diag(confusion_matrix)) / sum(confusion_matrix)
-accuracy
+```
+
+```{r}
+# Get predicted probabilities
+probs <- predict(rf_model, newdata = test_data, type = "prob")
+
+# Extract true class probabilities
+true_class <- test_data$category
+true_probs <- probs[cbind(seq_len(nrow(probs)), match(true_class, colnames(probs)))]
+
+# Residuals = 1 - predicted probability for the true class
+residuals <- 1 - true_probs
+
+# Add to a dataframe for plotting
+resid_df <- data.frame(
+  reported_year = test_data$reported_year,
+  value_millions = test_data$value_millions,
+  residual = residuals
+)
+
+ggplot(resid_df, aes(x = value_millions, y = residual)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "loess") +
+  labs(title = "Residuals vs Value (Random Forest Classification)",
+       x = "Value (Millions)", y = "Residual (1 - True Class Prob)") +
+  theme_minimal()
+
 
 ```
 
@@ -249,8 +267,6 @@ varImpPlot(rf_model, main = "Variable Importance Plot")
 ## AK's Heatmap: Volatility in Spending Categories Over Time
 
 ```{r}
-
-
 # Focus on top 8 categories for clarity
 top_categories_heatmap <- clean_data %>%
   group_by(category) %>%
@@ -268,14 +284,11 @@ ggplot(heatmap_data, aes(x = reported_year, y = fct_reorder(category, desc(categ
   geom_tile() +
   scale_fill_viridis_c(option = "C", name = "Spending\n(Millions USD)") +
   labs(
-    title = "Heatmap of Consumer Spending by Category and Year",
+    title = "Heatmap of Consumer Spending by Category",
     x = "Year",
     y = "Category"
   ) +
   theme_minimal()
-
-
-
 ```
 
 # Conclusions
