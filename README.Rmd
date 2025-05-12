@@ -162,6 +162,51 @@ Looking at these box plots, it's clear why service spending is higher than goods
 
 ## Jordyn's Analysis
 
+```{r}
+goods_data <- clean_data %>%
+  filter(str_detect(category, "Goods|Durable|Nondurable") & unit == "millions_dollars") %>%
+  mutate(type = case_when(
+    str_detect(category, "Durable goods") ~ "Durable",
+    str_detect(category, "Goods") ~ "Nondurable",
+    TRUE ~ NA_character_
+  )) %>%
+  filter(!is.na(type)) 
+
+ggplot(goods_data, aes(x = type, y = value, fill = category)) +
+  geom_col(position = "stack") +
+  labs(title = "Durable vs. Nondurable Goods Spending",
+       x = "Goods Type", y = "Millions $") +
+  scale_fill_brewer(palette = "Set3") +
+  theme_minimal()
+
+```
+
+This suggests a greater share of consumer or economic expenditure goes toward short-lived products (food, fuel, clothing) compared to long-lasting items (appliances, cars).
+
+```{r}
+ggplot(clean_data, aes(x = value_millions)) + 
+  geom_histogram(bins = 30, fill = "lightblue", color = "black") + 
+  geom_vline(aes(xintercept = mean(value_millions)), color = "red", linetype = "dashed", size = 1) +
+  geom_vline(aes(xintercept = median(value_millions)), color = "blue", linetype = "dashed", size = 1) + 
+  labs(title = "Distribution of Consumer Spending with Mean and Median", x = "Spending", y = "Frequency")
+
+
+```
+
+Typical consumer spending is relatively low, as indicated by the high frequency of small values and the lower median. The average spending is misleading as a measure of central tendency here due to a few high spenders skewing the data. Median is a better indicator of typical consumer behavior in this dataset. Policy or marketing strategies should consider the skewness as most consumers behave differently from the few big spenders.
+
+
+```{r}
+ggplot(clean_data, aes(x = date, y = value, color = expenditure_type)) + 
+  geom_smooth(method = "loess", se = FALSE, aes(color = expenditure_type), size = 1.2) +  # Smoothed line only
+  labs(title = "Expenditure Trends Over Time (Smoothed)", x = "Date", y = "Expenditure") +
+  scale_color_manual(values = c("per_capita" = "blue", "total" = "red")) +
+  theme_minimal()
+
+
+```
+Both total and per capita expenditures exhibit a consistent upward trend over the entire period, indicating increasing spending over time. The growth for total appears to accelerate more steeply after 2015, suggesting either increased population, inflation, or expanded services. Although per_capita is growing steadily, it shows a more gradual slope compared to total expenditure.
+
 ## AK's Analysis
 
 In your write-up, make sure to refer to all of the figures you create. You can include a hyperlink to the [scatterplot](#fig:scatterplot) by using the name of the code chunk (make sure, to give each code chunk a different name). In your markdown document you can create this link either by calling the function `chunkref` with the name of the code chunk in quotes, i.e. `r chunkref("scatterplot")` or by using the markdown expression `[scatterplot](#fig:scatterplot)`. Similarly, we can refer to the `r chunkref("2nd scatterplot")`. Note that the figure captions appear above the figures - this saves us from having to scroll up after following the link.

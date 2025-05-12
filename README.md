@@ -137,6 +137,38 @@ food and beverages.
 
 ## Jordyn’s Analysis
 
+![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+
+This suggests a greater share of consumer or economic expenditure goes
+toward short-lived products (food, fuel, clothing) compared to
+long-lasting items (appliances, cars).
+
+    ## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+    ## ℹ Please use `linewidth` instead.
+    ## This warning is displayed once every 8 hours.
+    ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+    ## generated.
+
+![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+
+Typical consumer spending is relatively low, as indicated by the high
+frequency of small values and the lower median. The average spending is
+misleading as a measure of central tendency here due to a few high
+spenders skewing the data. Median is a better indicator of typical
+consumer behavior in this dataset. Policy or marketing strategies should
+consider the skewness as most consumers behave differently from the few
+big spenders.
+
+    ## `geom_smooth()` using formula = 'y ~ x'
+
+![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- --> Both total
+and per capita expenditures exhibit a consistent upward trend over the
+entire period, indicating increasing spending over time. The growth for
+total appears to accelerate more steeply after 2015, suggesting either
+increased population, inflation, or expanded services. Although
+per_capita is growing steadily, it shows a more gradual slope compared
+to total expenditure.
+
 ## AK’s Analysis
 
 In your write-up, make sure to refer to all of the figures you create.
@@ -191,282 +223,15 @@ The code for that is `[Results 3]`.
 
 ## AK’s Model: Modeling Using Random Forests
 
-    ## Warning: package 'randomForest' was built under R version 4.4.3
+    ## `geom_smooth()` using formula = 'y ~ x'
 
-    ## randomForest 4.7-1.2
+![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
-    ## Type rfNews() to see new features/changes/bug fixes.
-
-    ## 
-    ## Attaching package: 'randomForest'
-
-    ## The following object is masked from 'package:dplyr':
-    ## 
-    ##     combine
-
-    ## The following object is masked from 'package:ggplot2':
-    ## 
-    ##     margin
-
-    ## 
-    ## Call:
-    ##  randomForest(formula = category ~ reported_year + value_millions,      data = train_data, ntree = 500, importance = TRUE) 
-    ##                Type of random forest: classification
-    ##                      Number of trees: 500
-    ## No. of variables tried at each split: 1
-    ## 
-    ##         OOB estimate of  error rate: 64.81%
-    ## Confusion matrix:
-    ##                                                                                      Clothing and footwear
-    ## Clothing and footwear                                                                                   15
-    ## Durable goods                                                                                            0
-    ## Final consumption expenditures of nonprofit institutions serving households (NPISHs)                     8
-    ## Financial services and insurance                                                                         0
-    ## Food and beverages purchased for off-premises consumption                                                0
-    ## Food services and accommodations                                                                         0
-    ## Furnishings and durable household equipment                                                             15
-    ## Gasoline and other energy goods                                                                          6
-    ## Goods                                                                                                    0
-    ## Gross output of nonprofit institutions                                                                   0
-    ##                                                                                      Durable goods
-    ## Clothing and footwear                                                                            0
-    ## Durable goods                                                                                   17
-    ## Final consumption expenditures of nonprofit institutions serving households (NPISHs)             0
-    ## Financial services and insurance                                                                 0
-    ## Food and beverages purchased for off-premises consumption                                        0
-    ## Food services and accommodations                                                                 0
-    ## Furnishings and durable household equipment                                                      0
-    ## Gasoline and other energy goods                                                                  0
-    ## Goods                                                                                            4
-    ## Gross output of nonprofit institutions                                                          25
-    ##                                                                                      Final consumption expenditures of nonprofit institutions serving households (NPISHs)
-    ## Clothing and footwear                                                                                                                                                   7
-    ## Durable goods                                                                                                                                                           0
-    ## Final consumption expenditures of nonprofit institutions serving households (NPISHs)                                                                                   18
-    ## Financial services and insurance                                                                                                                                        0
-    ## Food and beverages purchased for off-premises consumption                                                                                                               0
-    ## Food services and accommodations                                                                                                                                        0
-    ## Furnishings and durable household equipment                                                                                                                             3
-    ## Gasoline and other energy goods                                                                                                                                        15
-    ## Goods                                                                                                                                                                   0
-    ## Gross output of nonprofit institutions                                                                                                                                  0
-    ##                                                                                      Financial services and insurance
-    ## Clothing and footwear                                                                                               0
-    ## Durable goods                                                                                                       1
-    ## Final consumption expenditures of nonprofit institutions serving households (NPISHs)                                0
-    ## Financial services and insurance                                                                                    5
-    ## Food and beverages purchased for off-premises consumption                                                          11
-    ## Food services and accommodations                                                                                   34
-    ## Furnishings and durable household equipment                                                                         0
-    ## Gasoline and other energy goods                                                                                     5
-    ## Goods                                                                                                               1
-    ## Gross output of nonprofit institutions                                                                              1
-    ##                                                                                      Food and beverages purchased for off-premises consumption
-    ## Clothing and footwear                                                                                                                        0
-    ## Durable goods                                                                                                                                0
-    ## Final consumption expenditures of nonprofit institutions serving households (NPISHs)                                                         0
-    ## Financial services and insurance                                                                                                             7
-    ## Food and beverages purchased for off-premises consumption                                                                                   27
-    ## Food services and accommodations                                                                                                             1
-    ## Furnishings and durable household equipment                                                                                                  0
-    ## Gasoline and other energy goods                                                                                                              0
-    ## Goods                                                                                                                                        0
-    ## Gross output of nonprofit institutions                                                                                                       4
-    ##                                                                                      Food services and accommodations
-    ## Clothing and footwear                                                                                               1
-    ## Durable goods                                                                                                       0
-    ## Final consumption expenditures of nonprofit institutions serving households (NPISHs)                                1
-    ## Financial services and insurance                                                                                   31
-    ## Food and beverages purchased for off-premises consumption                                                           2
-    ## Food services and accommodations                                                                                    1
-    ## Furnishings and durable household equipment                                                                         0
-    ## Gasoline and other energy goods                                                                                    14
-    ## Goods                                                                                                               0
-    ## Gross output of nonprofit institutions                                                                              0
-    ##                                                                                      Furnishings and durable household equipment
-    ## Clothing and footwear                                                                                                         14
-    ## Durable goods                                                                                                                  0
-    ## Final consumption expenditures of nonprofit institutions serving households (NPISHs)                                           3
-    ## Financial services and insurance                                                                                               0
-    ## Food and beverages purchased for off-premises consumption                                                                      0
-    ## Food services and accommodations                                                                                               0
-    ## Furnishings and durable household equipment                                                                                   22
-    ## Gasoline and other energy goods                                                                                                2
-    ## Goods                                                                                                                          0
-    ## Gross output of nonprofit institutions                                                                                         0
-    ##                                                                                      Gasoline and other energy goods
-    ## Clothing and footwear                                                                                              4
-    ## Durable goods                                                                                                      0
-    ## Final consumption expenditures of nonprofit institutions serving households (NPISHs)                              13
-    ## Financial services and insurance                                                                                   3
-    ## Food and beverages purchased for off-premises consumption                                                          0
-    ## Food services and accommodations                                                                                  10
-    ## Furnishings and durable household equipment                                                                        2
-    ## Gasoline and other energy goods                                                                                    0
-    ## Goods                                                                                                              0
-    ## Gross output of nonprofit institutions                                                                             1
-    ##                                                                                      Goods
-    ## Clothing and footwear                                                                    0
-    ## Durable goods                                                                            0
-    ## Final consumption expenditures of nonprofit institutions serving households (NPISHs)     0
-    ## Financial services and insurance                                                         0
-    ## Food and beverages purchased for off-premises consumption                                0
-    ## Food services and accommodations                                                         0
-    ## Furnishings and durable household equipment                                              0
-    ## Gasoline and other energy goods                                                          0
-    ## Goods                                                                                   37
-    ## Gross output of nonprofit institutions                                                   0
-    ##                                                                                      Gross output of nonprofit institutions
-    ## Clothing and footwear                                                                                                     0
-    ## Durable goods                                                                                                            26
-    ## Final consumption expenditures of nonprofit institutions serving households (NPISHs)                                      0
-    ## Financial services and insurance                                                                                          0
-    ## Food and beverages purchased for off-premises consumption                                                                 4
-    ## Food services and accommodations                                                                                          0
-    ## Furnishings and durable household equipment                                                                               0
-    ## Gasoline and other energy goods                                                                                           0
-    ## Goods                                                                                                                     1
-    ## Gross output of nonprofit institutions                                                                                   10
-    ##                                                                                      class.error
-    ## Clothing and footwear                                                                  0.6341463
-    ## Durable goods                                                                          0.6136364
-    ## Final consumption expenditures of nonprofit institutions serving households (NPISHs)   0.5813953
-    ## Financial services and insurance                                                       0.8913043
-    ## Food and beverages purchased for off-premises consumption                              0.3863636
-    ## Food services and accommodations                                                       0.9782609
-    ## Furnishings and durable household equipment                                            0.4761905
-    ## Gasoline and other energy goods                                                        1.0000000
-    ## Goods                                                                                  0.1395349
-    ## Gross output of nonprofit institutions                                                 0.7560976
-
-    ##                                                                                       
-    ## predictions                                                                            Clothing and footwear
-    ##   Clothing and footwear                                                                                    7
-    ##   Durable goods                                                                                            0
-    ##   Final consumption expenditures of nonprofit institutions serving households (NPISHs)                     3
-    ##   Financial services and insurance                                                                         0
-    ##   Food and beverages purchased for off-premises consumption                                                0
-    ##   Food services and accommodations                                                                         0
-    ##   Furnishings and durable household equipment                                                              2
-    ##   Gasoline and other energy goods                                                                          1
-    ##   Goods                                                                                                    0
-    ##   Gross output of nonprofit institutions                                                                   0
-    ##                                                                                       
-    ## predictions                                                                            Durable goods
-    ##   Clothing and footwear                                                                            0
-    ##   Durable goods                                                                                    3
-    ##   Final consumption expenditures of nonprofit institutions serving households (NPISHs)             0
-    ##   Financial services and insurance                                                                 0
-    ##   Food and beverages purchased for off-premises consumption                                        0
-    ##   Food services and accommodations                                                                 0
-    ##   Furnishings and durable household equipment                                                      0
-    ##   Gasoline and other energy goods                                                                  0
-    ##   Goods                                                                                            0
-    ##   Gross output of nonprofit institutions                                                           7
-    ##                                                                                       
-    ## predictions                                                                            Final consumption expenditures of nonprofit institutions serving households (NPISHs)
-    ##   Clothing and footwear                                                                                                                                                   1
-    ##   Durable goods                                                                                                                                                           0
-    ##   Final consumption expenditures of nonprofit institutions serving households (NPISHs)                                                                                    3
-    ##   Financial services and insurance                                                                                                                                        0
-    ##   Food and beverages purchased for off-premises consumption                                                                                                               0
-    ##   Food services and accommodations                                                                                                                                        0
-    ##   Furnishings and durable household equipment                                                                                                                             0
-    ##   Gasoline and other energy goods                                                                                                                                         7
-    ##   Goods                                                                                                                                                                   0
-    ##   Gross output of nonprofit institutions                                                                                                                                  0
-    ##                                                                                       
-    ## predictions                                                                            Financial services and insurance
-    ##   Clothing and footwear                                                                                               0
-    ##   Durable goods                                                                                                       0
-    ##   Final consumption expenditures of nonprofit institutions serving households (NPISHs)                                0
-    ##   Financial services and insurance                                                                                    2
-    ##   Food and beverages purchased for off-premises consumption                                                           0
-    ##   Food services and accommodations                                                                                    3
-    ##   Furnishings and durable household equipment                                                                         0
-    ##   Gasoline and other energy goods                                                                                     3
-    ##   Goods                                                                                                               0
-    ##   Gross output of nonprofit institutions                                                                              0
-    ##                                                                                       
-    ## predictions                                                                            Food and beverages purchased for off-premises consumption
-    ##   Clothing and footwear                                                                                                                        0
-    ##   Durable goods                                                                                                                                0
-    ##   Final consumption expenditures of nonprofit institutions serving households (NPISHs)                                                         0
-    ##   Financial services and insurance                                                                                                             1
-    ##   Food and beverages purchased for off-premises consumption                                                                                    8
-    ##   Food services and accommodations                                                                                                             0
-    ##   Furnishings and durable household equipment                                                                                                  0
-    ##   Gasoline and other energy goods                                                                                                              0
-    ##   Goods                                                                                                                                        0
-    ##   Gross output of nonprofit institutions                                                                                                       1
-    ##                                                                                       
-    ## predictions                                                                            Food services and accommodations
-    ##   Clothing and footwear                                                                                               0
-    ##   Durable goods                                                                                                       0
-    ##   Final consumption expenditures of nonprofit institutions serving households (NPISHs)                                0
-    ##   Financial services and insurance                                                                                    4
-    ##   Food and beverages purchased for off-premises consumption                                                           0
-    ##   Food services and accommodations                                                                                    1
-    ##   Furnishings and durable household equipment                                                                         0
-    ##   Gasoline and other energy goods                                                                                     3
-    ##   Goods                                                                                                               0
-    ##   Gross output of nonprofit institutions                                                                              0
-    ##                                                                                       
-    ## predictions                                                                            Furnishings and durable household equipment
-    ##   Clothing and footwear                                                                                                          4
-    ##   Durable goods                                                                                                                  0
-    ##   Final consumption expenditures of nonprofit institutions serving households (NPISHs)                                           1
-    ##   Financial services and insurance                                                                                               0
-    ##   Food and beverages purchased for off-premises consumption                                                                      0
-    ##   Food services and accommodations                                                                                               0
-    ##   Furnishings and durable household equipment                                                                                    7
-    ##   Gasoline and other energy goods                                                                                                0
-    ##   Goods                                                                                                                          0
-    ##   Gross output of nonprofit institutions                                                                                         0
-    ##                                                                                       
-    ## predictions                                                                            Gasoline and other energy goods
-    ##   Clothing and footwear                                                                                              1
-    ##   Durable goods                                                                                                      0
-    ##   Final consumption expenditures of nonprofit institutions serving households (NPISHs)                               5
-    ##   Financial services and insurance                                                                                   2
-    ##   Food and beverages purchased for off-premises consumption                                                          0
-    ##   Food services and accommodations                                                                                   2
-    ##   Furnishings and durable household equipment                                                                        1
-    ##   Gasoline and other energy goods                                                                                    1
-    ##   Goods                                                                                                              0
-    ##   Gross output of nonprofit institutions                                                                             0
-    ##                                                                                       
-    ## predictions                                                                            Goods
-    ##   Clothing and footwear                                                                    0
-    ##   Durable goods                                                                            1
-    ##   Final consumption expenditures of nonprofit institutions serving households (NPISHs)     0
-    ##   Financial services and insurance                                                         0
-    ##   Food and beverages purchased for off-premises consumption                                0
-    ##   Food services and accommodations                                                         0
-    ##   Furnishings and durable household equipment                                              0
-    ##   Gasoline and other energy goods                                                          0
-    ##   Goods                                                                                   10
-    ##   Gross output of nonprofit institutions                                                   0
-    ##                                                                                       
-    ## predictions                                                                            Gross output of nonprofit institutions
-    ##   Clothing and footwear                                                                                                     0
-    ##   Durable goods                                                                                                             6
-    ##   Final consumption expenditures of nonprofit institutions serving households (NPISHs)                                      0
-    ##   Financial services and insurance                                                                                          1
-    ##   Food and beverages purchased for off-premises consumption                                                                 3
-    ##   Food services and accommodations                                                                                          0
-    ##   Furnishings and durable household equipment                                                                               0
-    ##   Gasoline and other energy goods                                                                                           0
-    ##   Goods                                                                                                                     0
-    ##   Gross output of nonprofit institutions                                                                                    3
-
-    ## [1] 0.4166667
-
-![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
 ## AK’s Heatmap: Volatility in Spending Categories Over Time
 
-![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 # Conclusions
 
