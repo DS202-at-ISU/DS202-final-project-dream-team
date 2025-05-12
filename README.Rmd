@@ -56,7 +56,7 @@ THINGS TO NOTE
 
 # Motivation
 
-We wanted to examine consumer spending in Iowa. Not only were we curious about the distribution of spending among different categories of goods, but this is also valuable information for any business providing a good or service.
+We wanted to examine consumer spending in Iowa. Not only were we curious about the distribution of spending among different categories of goods and services, but this is also valuable information for any business providing a good or service.
 
 At the end of the Intro, write a sentence describing what each of the (result) sections is about, e.g. in section [Results 1] we show the relationship between XXX and YYY, section [Results 2: Modeling Using Random Forests] also considers the effect of variable ZZZ. ... Finally we conclude with a quick summary of our findings and potential follow-up work in section [Conclusions].
 
@@ -101,6 +101,10 @@ clean_data <- data %>% mutate(
       TRUE ~ tolower(gsub("[^a-z]", "", variable_unit))
     ),
     value_millions = ifelse(unit == "dollars", value/1e6, value)
+  ) %>% 
+  
+  mutate(
+    category = factor(category), expenditure_type = factor(expenditure_type)
   )
 
 print(colnames(data))
@@ -111,9 +115,7 @@ clean_data
 
 -   The data was cleaned by standardizing column names, extracting simplified categories from text fields, splitting composite IDs into separate columns, converting data types (dates, numbers), normalizing units to millions, and removing duplicates.
 
-What are the variables that you will be using in the main part of the report? What are their ranges? You could include a table with variable names, a short explanation, and (very broad) summary statistics.
-
--   The primary variables that will be used will be consumption_category, reported_year, and value_millions. Some summaries and preliminary plots are provided below.
+-   The primary variables that will be used will be category, which includes the type of good and/or service; reported_year, which is the year the consumer data was reported; and value, which contains the amount of money spent for a specific category and year.
 
 ```{r summaries}
 summary(clean_data)
@@ -121,22 +123,48 @@ summary(clean_data)
 goods <- c("Motor vehicles and parts", "Furnishings and durable household equipment", "Recreational goods and vehicles", "Other durable goods", "Food and beverages purchased for off-premises consumption", "Clothing and footwear", "Gasoline and other energy goods", "Other nondurable goods")
 
 services <- c("Housing and utilities", "Health care", "Transportation services", "Recreation services", "Food services and accommodations", "Financial services and insurance", "Other services")
-
-clean_data %>% 
-  filter(category == "Total personal consumption expenditures") %>% 
-  ggplot(aes(reported_year, value)) + 
-  geom_point() + 
-  geom_line()
-
-clean_data %>% filter(category %in% goods | category %in% services
-  ) %>% ggplot(aes(category, value)) + geom_boxplot() + coord_flip()
 ```
 
 # Results
 
-Each line of exploration is supposed to be featured in one of the Results sections. Make sure to change to more interesting section headers!
-
 ## Kylie's Analysis
+
+```{r}
+clean_data %>% 
+  filter((category %in% goods | category %in% services) & expenditure_type == "total") %>% 
+  mutate(type = ifelse(category %in% goods, "Goods", "Services")) %>% 
+  group_by(type, reported_year) %>% 
+  summarise(totalexpenditures = sum(value)) %>% 
+  ggplot(aes(reported_year, totalexpenditures, color = type)) +
+  geom_point() +
+  geom_line() +
+  labs(x = "Year", y = "Expenditures (Millions USD)", title = "Consumer Spending between Goods and Services over Time")
+```
+
+Generally, services have higher consumer expenditures than goods do. However, we see a drop in service expenditures in 2020, and an increase in goods expenditures in the following year. COVID clearly impacted consumer spending. Some possible reasons for this could be a drop in consumer demand for services during the quarantine period, price increases due to the economy taking a hit during COVID, consumers stockpiling assorted goods, and more.
+
+```{r}
+clean_data %>% 
+  filter(category %in% goods & expenditure_type == "total") %>% 
+  ggplot(aes(reported_year, value, color = category)) + 
+  geom_point() + 
+  geom_line() +
+  labs(x = "Year", y = "Expenditures (Millions USD)", title = "Consumer Spending of Goods over Time")
+```
+
+Looking only at goods, nearly every type of good has a relatively steady increase as time goes on. Some goods, such as clothing, gasoline, and various durable goods saw a drop in consumer spending in 2020, while others like food, recreational goods, and other nondurable goods saw an increase in 2020, so COVID definitely had an impact on consumer spending. Clearly, gasoline has the most variance in consumer spending, which makes sense since although demand for gas is probably steady, gas prices vary a lot.
+
+```{r}
+clean_data %>% 
+  filter((category %in% goods | category %in% services) & expenditure_type == "total") %>% 
+  mutate(type = ifelse(category %in% goods, "Goods", "Services")) %>% 
+  ggplot(aes(reorder(category, value, FUN = median), value, color = type)) + 
+  geom_boxplot() + 
+  coord_flip() +
+  labs(x = "Category of Goods/Service", y = "Expenditures (Millions USD)", title = "Consumer Spending of Goods and Services")
+```
+
+Looking at these box plots, it's clear why service spending is higher than goods spending. Health care and housing/utilities dominate consumer spending overall. Then, the next items that consumers spend the most on are grocery items, included in miscellaneous nondurable goods and also food and beverages.
 
 ## Jordyn's Analysis
 
@@ -176,6 +204,9 @@ Additionally, you can also refer to different sections in your writeup by using 
 
 ```{r}
 library(randomForest)
+
+# Un-factor category
+clean_data <- clean_data %>% mutate(category = as.character(category))
 
 # Filter down to a manageable number of categories
 top_categories <- clean_data %>%
