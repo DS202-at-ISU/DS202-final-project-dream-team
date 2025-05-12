@@ -34,8 +34,6 @@ library(stringr)
 library(tidyverse)
 ```
 
-## Part I: Project report {.unnumbered}
-
 # Analysis of Consumer Spending in Iowa {.unnumbered}
 
 Authors: Kylie Tauke, Jordyn Reimer, and Akshat Valse
@@ -44,15 +42,11 @@ Authors: Kylie Tauke, Jordyn Reimer, and Akshat Valse
 
 The data explored in this project details estimates on consumer spending in the state of Iowa. We wanted to identify what consumers spend the most on and how it has changed throughout the years. The data comes from the U.S. Bureau of Economic Analysis.
 
-ADD FINDINGS LATER
-
-THINGS TO NOTE - page number on slide - facet by categorical variables - not too much text on slides - he's kinda picky on what type of figure you use - stacked vs dodge bar chart - percent vs count bar chart
+We found that consumer spending consistently increases over time, which could be due to multiple things such as inflation, population growth, economy growth, etc. Consumers spend more on services, dominated by health care and housing or utility expenses, than goods, which is dominated by nondurable goods like groceries.
 
 # Motivation
 
 We wanted to examine consumer spending in Iowa. Not only were we curious about the distribution of spending among different categories of goods and services, but this is also valuable information for any business providing a good or service.
-
-At the end of the Intro, write a sentence describing what each of the (result) sections is about, e.g. in section [Results 1] we show the relationship between XXX and YYY, section [Results 2: Modeling Using Random Forests] also considers the effect of variable ZZZ. ... Finally we conclude with a quick summary of our findings and potential follow-up work in section [Conclusions].
 
 # Quick Data Summary
 
@@ -109,9 +103,23 @@ clean_data
 
 -   The data was cleaned by standardizing column names, extracting simplified categories from text fields, splitting composite IDs into separate columns, converting data types (dates, numbers), normalizing units to millions, and removing duplicates.
 
--   The primary variables that will be used will be category, which includes the type of good and/or service; reported_year, which is the year the consumer data was reported; and value, which contains the amount of money spent for a specific category and year.
+-   The primary variables that will be used will be category, which includes the type of good and/or service; reported_year, which is the year the consumer data was reported from 1997 to 2023; and value, which contains the amount of money spent for a specific category and year.
 
-```{r summaries}
+-   Total personal consumption expenditures includes all categories across goods and services.
+
+    -   Services expenditures had two categories, household consumption expenditures (for services) and final consumption expenditures of nonprofit institutions serving households (NPISHs).
+
+        -   NPISH expenditures were generally ignored.
+
+        -   Household service expenditures were further split into housing and utilities, health care, transportation services, recreation services, food services and accommodations, financial services and insurance, and other miscellaneous services.
+
+    -   Goods expenditures are split into two categories, durable and nondurable goods, which are then further split.
+
+        -   Durable goods include furnishings and durable household equipment, motor vehicles and parts, recreational goods and vehicles, and other miscellaneous durable goods.
+
+        -   Nondurable goods include food and beverages purchased for off-premises consumption, clothing and footwear, gasoline and other energy goods, and other miscellaneous nondurable goods.
+
+```{r summaries, include = FALSE}
 summary(clean_data)
 
 goods <- c("Motor vehicles and parts", "Furnishings and durable household equipment", "Recreational goods and vehicles", "Other durable goods", "Food and beverages purchased for off-premises consumption", "Clothing and footwear", "Gasoline and other energy goods", "Other nondurable goods")
@@ -123,7 +131,7 @@ services <- c("Housing and utilities", "Health care", "Transportation services",
 
 ## Kylie's Analysis
 
-```{r}
+```{r goods vs services, message = FALSE}
 clean_data %>% 
   filter((category %in% goods | category %in% services) & expenditure_type == "total") %>% 
   mutate(type = ifelse(category %in% goods, "Goods", "Services")) %>% 
@@ -135,9 +143,9 @@ clean_data %>%
   labs(x = "Year", y = "Expenditures (Millions USD)", title = "Consumer Spending between Goods and Services over Time")
 ```
 
-Generally, services have higher consumer expenditures than goods do. However, we see a drop in service expenditures in 2020, and an increase in goods expenditures in the following year. COVID clearly impacted consumer spending. Some possible reasons for this could be a drop in consumer demand for services during the quarantine period, price increases due to the economy taking a hit during COVID, consumers stockpiling assorted goods, and more.
+In this graph, we can see that generally, services have higher consumer expenditures than goods do. However, we see a drop in service expenditures in 2020, and an increase in goods expenditures in the following year. COVID clearly impacted consumer spending. Some possible reasons for this could be a drop in consumer demand for services during the quarantine period, price increases due to the economy taking a hit during COVID, consumers stockpiling assorted goods, and more.
 
-```{r}
+```{r goods over time}
 clean_data %>% 
   filter(category %in% goods & expenditure_type == "total") %>% 
   ggplot(aes(reported_year, value, color = category)) + 
@@ -148,7 +156,7 @@ clean_data %>%
 
 Looking only at goods, nearly every type of good has a relatively steady increase as time goes on. Some goods, such as clothing, gasoline, and various durable goods saw a drop in consumer spending in 2020, while others like food, recreational goods, and other nondurable goods saw an increase in 2020, so COVID definitely had an impact on consumer spending. Clearly, gasoline has the most variance in consumer spending, which makes sense since although demand for gas is probably steady, gas prices vary a lot.
 
-```{r}
+```{r category box plots}
 clean_data %>% 
   filter((category %in% goods | category %in% services) & expenditure_type == "total") %>% 
   mutate(type = ifelse(category %in% goods, "Goods", "Services")) %>% 
@@ -158,7 +166,7 @@ clean_data %>%
   labs(x = "Category of Goods/Service", y = "Expenditures (Millions USD)", title = "Consumer Spending of Goods and Services")
 ```
 
-Looking at these box plots, it's clear why service spending is higher than goods spending. Health care and housing/utilities dominate consumer spending overall. Then, the next items that consumers spend the most on are grocery items, included in miscellaneous nondurable goods and also food and beverages.
+These box plots clearly show why service spending is higher than goods spending. Health care and housing/utilities dominate consumer spending overall. Then, the next items that consumers spend the most on are grocery items, included in miscellaneous nondurable goods and also food and beverages.
 
 ## Jordyn's Analysis
 
@@ -167,7 +175,7 @@ goods_data <- clean_data %>%
   filter(str_detect(category, "Goods|Durable|Nondurable") & unit == "millions_dollars") %>%
   mutate(type = case_when(
     str_detect(category, "Durable goods") ~ "Durable",
-    str_detect(category, "Goods") ~ "Nondurable",
+    str_detect(category, "Nondurable goods") ~ "Nondurable",
     TRUE ~ NA_character_
   )) %>%
   filter(!is.na(type)) 
@@ -183,11 +191,11 @@ ggplot(goods_data, aes(x = type, y = value, fill = category)) +
 
 This suggests a greater share of consumer or economic expenditure goes toward short-lived products (food, fuel, clothing) compared to long-lasting items (appliances, cars).
 
-```{r}
+```{r, message = FALSE}
 ggplot(clean_data, aes(x = value_millions)) + 
   geom_histogram(bins = 30, fill = "lightblue", color = "black") + 
-  geom_vline(aes(xintercept = mean(value_millions)), color = "red", linetype = "dashed", size = 1) +
-  geom_vline(aes(xintercept = median(value_millions)), color = "blue", linetype = "dashed", size = 1) + 
+  geom_vline(aes(xintercept = mean(value_millions)), color = "red", linetype = "dashed", linewidth = 1) +
+  geom_vline(aes(xintercept = median(value_millions)), color = "blue", linetype = "dashed", linewidth = 1) + 
   labs(title = "Distribution of Consumer Spending with Mean and Median", x = "Spending", y = "Frequency")
 
 
@@ -195,23 +203,21 @@ ggplot(clean_data, aes(x = value_millions)) +
 
 Typical consumer spending is relatively low, as indicated by the high frequency of small values and the lower median. The average spending is misleading as a measure of central tendency here due to a few high spenders skewing the data. Median is a better indicator of typical consumer behavior in this dataset. Policy or marketing strategies should consider the skewness as most consumers behave differently from the few big spenders.
 
-
-```{r}
+```{r, message = FALSE}
 ggplot(clean_data, aes(x = date, y = value, color = expenditure_type)) + 
-  geom_smooth(method = "loess", se = FALSE, aes(color = expenditure_type), size = 1.2) +  # Smoothed line only
+  geom_smooth(method = "loess", se = FALSE, aes(color = expenditure_type), linewidth = 1.2) +  # Smoothed line only
   labs(title = "Expenditure Trends Over Time (Smoothed)", x = "Date", y = "Expenditure") +
   scale_color_manual(values = c("per_capita" = "blue", "total" = "red")) +
   theme_minimal()
 
 
 ```
+
 Both total and per capita expenditures exhibit a consistent upward trend over the entire period, indicating increasing spending over time. The growth for total appears to accelerate more steeply after 2015, suggesting either increased population, inflation, or expanded services. Although per_capita is growing steadily, it shows a more gradual slope compared to total expenditure.
 
 ## AK's Analysis
 
-In your write-up, make sure to refer to all of the figures you create. You can include a hyperlink to the [scatterplot](#fig:scatterplot) by using the name of the code chunk (make sure, to give each code chunk a different name). In your markdown document you can create this link either by calling the function `chunkref` with the name of the code chunk in quotes, i.e. `r chunkref("scatterplot")` or by using the markdown expression `[scatterplot](#fig:scatterplot)`. Similarly, we can refer to the `r chunkref("2nd scatterplot")`. Note that the figure captions appear above the figures - this saves us from having to scroll up after following the link.
-
-```{r scatterplot, echo=FALSE, fig.cap="This is the figure caption. Make sure to use the description we practised in the homework: first sentence describes structure of the plot, second sentence describes main finding, third sentence describes outliers/follow-up.", message = FALSE}
+```{r total over time}
 
 
 clean_data %>% 
@@ -222,7 +228,7 @@ clean_data %>%
 
 ```
 
-```{r 2nd scatterplot, echo=FALSE, fig.cap="This is the figure caption. Make sure to use the description we practised in the homework: first sentence describes structure of the plot, second sentence describes main finding, third sentence describes outliers/follow-up.", message = FALSE}
+```{r top categories}
 
 
 clean_data %>%
@@ -236,8 +242,6 @@ clean_data %>%
   labs(x = "Category", y = "Total Spending (Millions USD)", title = "Top 5 Spending Categories")
 
 ```
-
-Additionally, you can also refer to different sections in your writeup by using anchors (links) to section headers. Here, we are referring to subsection [Results 3: Volatility in Spending Categories Over Time]. The code for that is `[Results 3]`.
 
 ## AK's Model: Modeling Using Random Forests
 
@@ -277,7 +281,7 @@ confusion_matrix <- table(predictions, test_data$category)
 accuracy <- sum(diag(confusion_matrix)) / sum(confusion_matrix)
 ```
 
-```{r}
+```{r, message = FALSE}
 # Get predicted probabilities
 probs <- predict(rf_model, newdata = test_data, type = "prob")
 
@@ -311,7 +315,7 @@ varImpPlot(rf_model, main = "Variable Importance Plot")
 
 ## AK's Heatmap: Volatility in Spending Categories Over Time
 
-```{r}
+```{r heatmap}
 # Focus on top 8 categories for clarity
 top_categories_heatmap <- clean_data %>%
   group_by(category) %>%
@@ -338,18 +342,22 @@ ggplot(heatmap_data, aes(x = reported_year, y = fct_reorder(category, desc(categ
 
 # Conclusions
 
-Give a quick summary of your work. Here is the place to be a bit critical and discuss potential limitations. Add a sentence on what else you would have liked to include in your data exploration if you had more time or more members in your team.
+In this project, we explored consumer spending patterns in Iowa using data from the U.S. Bureau of Economic Analysis. We analyzed overall spending trends such as spending over time, comparisons between services and goods, and distributions of spending. We built a random forest model to predict spending categories based on expenditure and year and visualized shifts in major spending categories through a heatmap.
 
--   In this project, we explored consumer spending patterns in Iowa using data from the U.S. Bureau of Economic Analysis. We analyzed overall spending trends over time, built a random forest model to predict spending categories based on expenditure and year, and visualized shifts in major spending categories through a heatmap. Our results show that total consumer spending in Iowa has steadily increased over the past two decades, with essential categories like healthcare and housing consistently dominating expenditure. Meanwhile, discretionary categories such as food services and recreation displayed greater volatility.
+Our results show that total consumer spending in Iowa has steadily increased over the past two decades, which could indicate multiple things (economy growth, population growth, inflation, etc.) with essential categories like healthcare and housing consistently dominating overall expenditures. We found that around the COVID pandemic, services had a drop in spending before rebounding while goods had an increase post-COVID.
 
-    One limitation of our analysis is that we did not adjust spending figures for inflation or population growth, which could affect year-to-year comparisons. Additionally, our predictive model only used two variables incorporating more economic indicators (such as unemployment rates, income levels, or demographic shifts) might improve model accuracy and interpretation.
+Within goods, consumers spend more on nondurable goods rather than durable goods, showing a possible market for businesses in Iowa. Groceries (food, beverages, and miscellaneous nondurable goods) dominate the goods spending.
 
-    If we had more time or additional team members, we would have liked to build a forecasting model to predict future consumer spending by category. We also would have explored spatial differences across counties in Iowa to investigate whether spending patterns vary geographically within the state.
+Meanwhile, discretionary categories such as food services and recreation displayed greater volatility.
+
+One limitation of our analysis is that we did not adjust spending figures for inflation or population growth, which could affect year-to-year comparisons. Additionally, our predictive model only used two variables, and incorporating more economic indicators (such as unemployment rates, income levels, or demographic shifts) might improve model accuracy and interpretation. Another limitation is that since the only value we had was expenditures per category, we could not develop any insights of related to how much of each category consumers were buying or the prices of items in each category.
+
+If we had more time or additional team members, we would have liked to build a forecasting model to predict future consumer spending by category. We also would have explored spatial differences across counties in Iowa to investigate whether spending patterns vary geographically within the state.
 
 ## Data source {.unnumbered}
 
-Where does the data come from, who owns the data? Where are all the scripts that you need to clean the data?
+We got our data from data.gov, which is used to house United States open datasets. The dataset used provides annual estimates of consumer spending in Iowa, developed by the U.S. Bureau of Economic Analysis.
 
 ## References {.unnumbered}
 
-List all resources you used.
+Link to data: <https://catalog.data.gov/dataset/annual-personal-consumption-expenditures-for-state-of-iowa>
