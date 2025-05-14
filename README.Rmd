@@ -227,6 +227,7 @@ clean_data %>%
   labs(x = "Year", y = "Expenditures (Millions USD)", title = "Total Consumer Spending Over Time")
 
 ```
+
 This plot suggests that the total consumer spending in Iowa has seen a strong positive linear increase. Not notable is the sharp increase after 2020 where consumer spending sees a steeper increase than most previous years. This suggests greater spending which may be due to various factors such as inflation or economic growth.
 
 ```{r top categories}
@@ -313,7 +314,7 @@ ggplot(resid_df, aes(x = value_millions, y = residual)) +
 varImpPlot(rf_model, main = "Variable Importance Plot")
 ```
 
-This model is a part of my honors component for this course decided early in the semester with the instructor Will Ju. The honors component required me to create some kind of a model to predict consumer spending in Iowa and I chose a random forest as it allows us to have multiple factors to predict aspects in each category. I noticed that the model did not perfect too well and I suspecr it is due to the presence of multiple cumulative categories. As suggested in the presentation, future research could create a random forest model for each category to acheive better results.
+This model is a part of my honors component for this course decided early in the semester with the instructor Will Ju. The honors component required me to create some kind of a model to predict consumer spending in Iowa and I chose a random forest as it allows us to have multiple factors to predict aspects in each category. I noticed that the model did not perfect too well and I suspect it is due to the presence of multiple cumulative categories. As suggested in the presentation, future research could create a random forest model for each category to achieve better results.
 
 ## AK's Heatmap: Volatility in Spending Categories Over Time
 
@@ -341,6 +342,7 @@ ggplot(heatmap_data, aes(x = reported_year, y = fct_reorder(category, desc(categ
   ) +
   theme_minimal()
 ```
+
 This heatmap showcases the dominance of consumer expenditures. Although due to it's dominance, it washes out the other categories, one can note how the other such cumulative category (household expenditures) does not come close to personal expenditures. The definition of household vs. personal expenditure creates a category to have too many expenditures attributed to it due to the narrower definition of household consumption.
 
 # Conclusions
